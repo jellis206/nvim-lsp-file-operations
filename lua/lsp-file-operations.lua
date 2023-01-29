@@ -1,10 +1,13 @@
 local M = {}
 
 local will_rename = require('lsp-file-operations.will-rename')
+local tsserver = require('lsp-file-operations.tsserver')
 local log = require('lsp-file-operations.log')
 
 local default_config = {
-  debug = false
+  debug = false,
+  will_rename = true,
+  tsserver = false,
 }
 
 M.setup = function(opts)
@@ -15,7 +18,12 @@ M.setup = function(opts)
   local ok, tree_api = pcall(require, 'nvim-tree.api')
   if ok then
     log.debug("Setting up nvim-tree integration")
-    tree_api.events.subscribe(tree_api.events.Event.WillRenameNode, will_rename.callback)
+    if opts.will_rename then
+      tree_api.events.subscribe(tree_api.events.Event.WillRenameNode, will_rename.callback)
+    end
+    if opts.tsserver then
+      tree_api.events.subscribe(tree_api.events.Event.WillRenameNode, tsserver.applyRenameFileCallback)
+    end
   end
 end
 

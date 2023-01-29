@@ -38,7 +38,11 @@ This is equivalent to:
 ```lua
 require("lsp-file-operations").setup {
   -- used to see debug logs in file `vim.fn.stdpath("cache") .. lsp-file-operations.log`
-  debug = false
+  debug = false,
+  -- send will_rename request
+  will_rename = true,
+  -- use tsserver specific command
+  tsserver = false,
 }
 ```
 

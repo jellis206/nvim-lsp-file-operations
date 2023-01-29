@@ -23,7 +23,7 @@ local ensure_dir_trailing_slash = function(path, is_dir)
   return path
 end
 
-local get_absolute_path = function(name)
+M.get_absolute_path = function(name)
   local path = Path:new(name)
   local is_dir = path:is_dir()
   local absolute_path = ensure_dir_trailing_slash(path:absolute(), is_dir)
@@ -60,7 +60,7 @@ end
 
 -- filters: FileOperationFilter[]
 M.matches_filters = function(filters, name)
-  local absolute_path, is_dir = get_absolute_path(name)
+  local absolute_path, is_dir = M.get_absolute_path(name)
   for _, filter in pairs(filters) do
     if match_filter(filter, absolute_path, is_dir) then
       log.debug("Path did match the filter", absolute_path, filter)
